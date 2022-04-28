@@ -1,10 +1,11 @@
-package day02;
+package day03;
 
 import day01.Lambda01;
+import day02.Lambda02;
 
 import java.util.*;
 
-public class Lambda02 {
+public class Lambda03 {
     public static void main(String[] args) {
 
         List<Integer> sayi = new ArrayList<>(Arrays.asList(4, 2, 6, 11, -5, 7, 3, 15));

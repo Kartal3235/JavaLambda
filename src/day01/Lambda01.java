@@ -7,7 +7,7 @@ import java.util.List;
 public class Lambda01 {
     public static void main(String[] args) {
         /*
-   1) Lambda "Functional Programming"-->mathod(action) kullanma pr dili.
+   1) Lambda "Functional Programming"-->method(action) kullanma pr dili.
       Lambda --> mathod create  etme değil mevcut method'ları(library)secip kullanmaktır...
       Lambda  kendi başına tanımlanabilen parametre alıp gönderebilen fonksiyonlardır.
       Lambda'lar sayesinde daha az kod ve hızlı geliştirme sağlanabilmektedir.
@@ -81,6 +81,7 @@ public class Lambda01 {
 
     }
     public static void yazdir(int a){// verilen int değeri aynı satırda boşluk bırakarak yazdırma action yapan seed(tohum)method create edildi
+
         System.out.print(a+" ");
     }
     public static void printElFunctional2(List<Integer> sayi){
