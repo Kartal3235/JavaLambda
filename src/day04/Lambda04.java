@@ -1,10 +1,7 @@
 package day04;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Lambda04 {
     /*
@@ -65,7 +62,7 @@ public class Lambda04 {
     //task 02-->ogrc sayilarinin   110 den az olmadigini  kontrol eden pr create ediniz.
     public static boolean ogrnSay110AzOLmd(List<Universite> unv){
 
-
+                        //her birine bak//
         return unv.stream().allMatch(t->t.getOgrcSayisi()>110);
     }
 
@@ -82,60 +79,99 @@ public class Lambda04 {
         unv.stream().map(t->t.getOgrcSayisi()).sorted(Comparator.reverseOrder()).forEach(t-> System.out.print(t+" "));
     }
 
+        //collect()->akısdaki elamanları istenen sarta gore toplar
+        //Collectors.toList()->collect'e toplanan elemanlarilist'e cevirir
+
 
     //task 05-->universite'leri notOrt gore  b->k siralayip ilk 3 'unu print ediniz.
-    public static void notOrtBykKck(List<Universite> unv){
+    public static List<Universite> notOrtBykKck(List<Universite> unv){
 
-        unv.stream().map(t->t.getNotOrt()).sorted(Comparator.reverseOrder()).limit(3).forEach(t-> System.out.println("t = " + t));
-    }
+        return unv.stream().
+                sorted(Comparator.comparing(Universite::getNotOrt).reversed()).//notOrt'a göre b->k sıralandı
+                limit(3).// akısın ilk 3 elemanı alındı
+                collect(Collectors.toList());//akışın ilk 3 elemanı liste assign edildi.
+
+        }
 
 
     //task 06--> ogrc sayisi en az olan 2. universite'yi  print ediniz.
     public static void ogrnSayenAzUnv(List<Universite> unv){
-        unv.stream().map(t->t.getOgrcSayisi()).sorted().limit(2).skip(1).forEach(t-> System.out.println("t = " + t));
+
+        unv.stream().
+                sorted(Comparator.comparing(Universite::getOgrcSayisi)).
+                limit(2).
+                skip(1).
+                collect(Collectors.toList());
     }
 
 
     //task 07--> notOrt 63 'den buyuk olan universite'lerin ogrc sayilarini toplamini print ediniz
     public static void notOrt63BykUnvOgrncSayTopl(List<Universite> unv){
-        System.out.println(unv.stream().filter(t -> t.getNotOrt() > 63).map(t -> t.getOgrcSayisi()).reduce(Integer::sum));
+        System.out.println(unv.
+                stream().
+                filter(t -> t.getNotOrt() > 63).// üniversiteler akıyor
+                map(t -> t.getOgrcSayisi()).// öğrenci sayıları akıyor
+                //reduce(Integer::sum));
+                //reduce(Math::addExact));
+                reduce(0,(t,u)->t+u));
+    }
+    public static int notOrt63BykUnvOgrncSayTopla(List<Universite> unv) {
+
+        return unv.
+                stream().
+                filter(t->t.getNotOrt()>63).
+                mapToInt(t->t.getOgrcSayisi()).
+                sum();
     }
 
 
-    //task 08--> Ogrenci sayisi 130'dan buyuk olan universite'lerin notOrt'larinin ortalamasini bulunuz.
+    //task 08--> Ogrenci sayisi 333'dan buyuk olan universite'lerin notOrt'larinin ortalamasini bulunuz.
     public static void ogrnSy130BykUnvnNotOrt(List<Universite> unv){
         System.out.println(unv.stream().
-                filter(t -> t.getOgrcSayisi() > 130).
-                mapToInt(Universite::getNotOrt).average());
+                filter(t -> t.getOgrcSayisi() > 333).//akişdaki elemanlar obje
+                mapToInt(Universite::getNotOrt).//(bu satırda sadece ınt akıyor))bu method akışdaki elemanları data type'nı
+                                                // parametresindeki değere(Int,double) göre update eder.
+                average());//akişdaki elemanların ortalaması alınır.
+
+        // mapToInt() --> bu method akısdaki elemanların data type'nı
+        // parameterisindeki() degere göre Int data type update eder
+        // mapToInt() --> bu method akısdaki elemanların data type'nı
+        // parameterisindeki() degere göre Int data type update eder
+
+        // mapToDouble() --> bu method akısdaki elemanların data type'nı
+        // parameterisindeki degere göre dooble data type update eder
     }
 
     //task 09-->"matematik" bolumlerinin sayisini  print ediniz.
     public static void matematikBlmSysPrint(List<Universite> unv){
 
-        System.out.println(unv.stream().filter(t -> t.getBolum().equalsIgnoreCase("matematik")).count());
+        System.out.println(unv.
+                stream().
+                filter(t -> t.getBolum().equalsIgnoreCase("matematik")).
+                count());//akışdaki eleman sayısını return eder.
+
+        //count();-->akısdaki elelman sayısını return eder
     }
 
-    //task 10-->Ogrenci sayilari 130'dan fazla olan universite'lerin en buyuk notOrt'unu bulunuz
+    //task 10-->Ogrenci sayilari 571'dan fazla olan universite'lerin en buyuk notOrt'unu bulunuz
     public static void ogrncSy130BykUnvEnBykNortOrt(List<Universite> unv){
         unv.stream().
-                filter(t->t.getOgrcSayisi()>130).
-                map(t->t.getNotOrt()).
-                sorted(Comparator.reverseOrder()).
-                limit(1).
-                forEach(t-> System.out.println(t+" "));
+                filter(t->t.getOgrcSayisi()>571).//unv obj akışı filtrelendi
+                mapToInt(t->t.getNotOrt()).//akışdaki unv obje, notOrt akışı olarak update edildi.
+                max();//akışın en buyuk değerini return eder.
+
     }
 
 
-    //task 11-->Ogrenci sayilari 150'dan az olan universite'lerin en kucuk notOrt'unu bulunuz.
+    //task 11-->Ogrenci sayilari 1071'dan az olan universite'lerin en kucuk notOrt'unu bulunuz.
 
-    public static void ogrncSy150KckUnvEnKckNortOrt(List<Universite> unv){
+    public static OptionalInt ogrncSy150KckUnvEnKckNortOrt(List<Universite> unv){
 
-        unv.stream().
-                filter(t->t.getOgrcSayisi()<150).
-                map(t->t.getNotOrt()).
-                sorted().
-                limit(1).
-                forEach(t-> System.out.println(t+" "));
+       return unv.stream().
+                filter(t->t.getOgrcSayisi()<1071).
+                mapToInt(t->t.getNotOrt()).
+                min();
+
     }
 }
 
